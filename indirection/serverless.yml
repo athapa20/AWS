@@ -1,0 +1,48 @@
+
+
+service: indirection
+
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  environment:
+    tableName: userids
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:GetItem
+        - dynamodb:UpdateItem
+        - dynamodb:PutItem
+        - dynamodb:Scan
+        - dynamodb:Query
+        - dynamodb:DescribeTable
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:us-east-1:785555937700:table/userids"
+
+functions:
+  getproxy:
+    handler: handler.getproxy
+
+    DynamoDBIamPolicy: 
+      Type: AWS::IAM::Policy
+      DependsOn: donkeyjobs
+      Properties:
+        PolicyName: lambda-dynamodb
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:DescribeTable
+                - dynamodb:Query
+                - dynamodb:Scan
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+              Resource: "arn:aws:dynamodb:us-east-1:785555937700:table/userids"
+
+
+
+

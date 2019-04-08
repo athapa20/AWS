@@ -1,0 +1,26 @@
+
+
+service: CoordServer 
+
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  environment:
+    tableName: userids
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:GetItem
+        - dynamodb:UpdateItem
+        - dynamodb:PutItem
+        - dynamodb:Scan
+        - dynamodb:Query
+        - dynamodb:DescribeTable
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:us-east-1:785555937700:table/userids"
+
+functions:
+  getCoordServer:
+    handler: server.getCoordServer
+
